@@ -52,6 +52,10 @@ app.get('/listings', async (req, res) => {
     res.redirect("/listings");
 });
 
+//Update route to update a specific listing
+
+
+
 // app.get("/testListing" , async (req, res) => {
 //     let sampleListing = new Listing({
 //         title: 'my new villa',
