@@ -7,6 +7,7 @@ const ejs = require('ejs');
 
 const ejsMate = require('ejs-mate');
 app.engine('ejs', ejsMate);
+app.use(expres.static(path.join(__dirname, 'public')));
 
 const methodOverride = require('method-override');
 app.use(methodOverride('_method'));
