@@ -8,6 +8,7 @@ const ejs = require('ejs');
 const ejsMate = require('ejs-mate');
 app.engine('ejs', ejsMate);
 app.use(expres.static(path.join(__dirname, 'public')));
+app.use('/logo', expres.static(path.join(__dirname, 'logo')));
 
 const methodOverride = require('method-override');
 app.use(methodOverride('_method'));
@@ -29,8 +30,9 @@ async function main() {
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-app.get('/', (req, res) => {
-    res.send('HI, I am root');
+app.get('/', async (req, res) => {
+    const heroListings = await Listing.find({}).limit(5);
+    res.render("listings/main.ejs", {heroListings});
 });
 
 // Index route to show all listings

@@ -1,23 +1,30 @@
 <% layout('layouts/boilerplate') -%>
-<body>
-    <h3>All Listings</h3>
-    <!-- <form method="GET" action="/listings/new">
-        <button>Add new list</button>
-    </form> -->
-<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
-<% for(let listing of allListings) { %>
-    <a href="/listings/<%= listing._id %>" style="text-decoration: none; color: black;">
-        <div class="card col " style="width: 20rem;">   
-            <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height: 20rem">  
-            <div class="card-img-overlay"></div>        
-            <div class="card-body">
-                <p class="card-text">
-                    <b><%= listing.title %> </b><br>
-                    ₹<%= listing.price.toLocaleString("en-IN") %> per night <br>
-                </p>
-            </div>
+<section class="page-header">
+    <p class="eyebrow">Browse stays</p>
+    <div class="page-header__actions">
+        <div>
+            <h1 class="page-title">All Listings</h1>
+            <p class="page-subtitle">Handpicked rentals sourced from our host community.</p>
         </div>
-    </a>
- <% } %>
+        <a class="btn btn-dark btn-lg" href="/listings/new">Add new listing</a>
+    </div>
+</section>
+
+<div class="card-grid">
+    <% for (let listing of allListings) { %>
+        <a href="/listings/<%= listing._id %>" class="listing-link">
+            <article class="listing-card">
+                <div class="listing-card__media">
+                    <img src="<%= listing.image.url %>" alt="<%= listing.title %> image">
+                </div>
+                <div class="listing-card__body">
+                    <div>
+                        <p class="listing-location"><%= listing.location %>, <%= listing.country %></p>
+                        <h3><%= listing.title %></h3>
+                    </div>
+                    <p class="listing-price">₹<%= listing.price.toLocaleString("en-IN") %> <span>/ night</span></p>
+                </div>
+            </article>
+        </a>
+    <% } %>
 </div>
-</body>

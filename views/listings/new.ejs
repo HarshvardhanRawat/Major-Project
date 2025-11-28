@@ -1,48 +1,45 @@
 <% layout('layouts/boilerplate') -%>
-<body>
-    <h3>Create a New Listing</h3>
+<section class="page-header">
+    <p class="eyebrow">Add a stay</p>
+    <h1 class="page-title">Create a New Listing</h1>
+    <p class="page-subtitle">Share the details guests need and publish instantly.</p>
+</section>
 
-    <div class="row">
-        <div class="col-8 offset-2">
-            <form method="POST" action="/listings">
-                <div class="mb-3">
-                    <label for="title" class="form-label">Title:</label>
-                    <input type="text" id="title" name="listing[title]" placeholder="Enter Title" required class="form-control"><br>
-                </div>
-
-
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description:</label>
-                    <textarea id="description" name="listing[description]"  placeholder="Enter Description" required class="form-control"></textarea><br>
-                </div>
-
-                <div class="mb-3">
-                    <label for="image" class="form-label">Image URL:</label>
-                    <input type="text" id="image" name="listing[image]" placeholder="Enter Image URL" required class="form-control"><br>
-                </div>
-
-                <div class="row">
-                    <div class="mb-3 col-4 md-4">
-                        <label for="price" class="form-label">Price:</label>
-                        <input type="number" id="price" name="listing[price]" placeholder="Enter Price" required class="form-control"><br>
-                    </div>
-
-                    <div class="mb-3 col-8 md-8">
-                        <label for="location" class="form-label">Location:</label>
-                        <input type="text" id="location" name="listing[location]" placeholder="Enter Location" required class="form-control"><br>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="country" class="form-label">Country:</label>
-                    <input type="text" id="country" name="listing[country]" placeholder="Enter Country" required class="form-control"><br>
-                </div>
-
-                <div class="mb-3">
-                    <button class="btn btn-dark add-btn">Create Listing</button>
-                </div>
-                
-            </form>
+<section class="form-panel">
+    <form method="POST" action="/listings" class="stacked-form">
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" id="title" name="listing[title]" placeholder="Enter Title" required class="form-control">
         </div>
-    </div>
-</body>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="description" rows="4" name="listing[description]" placeholder="Describe the space" required class="form-control"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="image" class="form-label">Image URL</label>
+            <input type="text" id="image" name="listing[image]" placeholder="https://example.com/photo.jpg" required class="form-control">
+        </div>
+
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label for="price" class="form-label">Price (₹)</label>
+                <input type="number" id="price" name="listing[price]" placeholder="Enter Price" required class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label for="location" class="form-label">Location</label>
+                <input type="text" id="location" name="listing[location]" placeholder="Enter Location" required class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label for="country" class="form-label">Country</label>
+                <input type="text" id="country" name="listing[country]" placeholder="Enter Country" required class="form-control">
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a class="btn btn-outline-dark btn-lg" href="/listings">Cancel</a>
+            <button class="btn btn-dark btn-lg add-btn" type="submit">Create Listing</button>
+        </div>
+    </form>
+</section>

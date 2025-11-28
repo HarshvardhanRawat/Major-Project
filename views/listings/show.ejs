@@ -1,32 +1,31 @@
 <% layout('layouts/boilerplate') -%>
-<body>
-    <h3>Listing Details :</h3>
-    <div class="row">
-        <div class="col-8 offset-2 mt-3">
-            <div class="card col-6 offset-3">
-                <img src="<%=listing.image.url%>" class="card-img-top show_image" alt="listing_image">
-                <div class="card-body">
-                    <p class="card-text">
-                        <b><%= listing.title %></b><br>
-                    </p>
-                </div>
+<section class="page-header">
+    <p class="eyebrow">Stay detail</p>
+    <h1 class="page-title"><%= listing.title %></h1>
+    <p class="page-subtitle"><%= listing.location %>, <%= listing.country %></p>
+</section>
+
+<section class="show-card">
+    <div class="show-card__media">
+        <img src="<%=listing.image.url%>" class="card-img-top show_image" alt="listing_image">
+    </div>
+    <div class="show-card__body">
+        <p class="show-description"><%= listing.description %></p>
+        <div class="show-meta">
+            <div>
+                <p class="label">Rate</p>
+                <p class="value">₹<%= listing.price.toLocaleString("en-IN") %> / night</p>
             </div>
-
-            <ul>
-                <li> <%= listing.description %> </li>
-                <li> ₹<%= listing.price.toLocaleString("en-IN") %> </li>
-                <li> <%= listing.location %> </li>
-                <li> <%= listing.country %> </li>
-            </ul>
-            <br>
-
-            <div class="btns col-6 mb-3 d-flex">
-                <a href="/listings/<%=listing._id%>/edit" class="btn btn-dark col-2 offset-2">Edit</a>
-
-                <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
-                    <button class="btn btn-dark col-12 offset-3">Delete</button>
-                </form>
-            </div>    
+            <div>
+                <p class="label">Hosted in</p>
+                <p class="value"><%= listing.location %>, <%= listing.country %></p>
+            </div>
+        </div>
+        <div class="form-actions">
+            <a href="/listings/<%=listing._id%>/edit" class="btn btn-dark btn-lg">Edit listing</a>
+            <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
+                <button class="btn btn-outline-dark btn-lg">Delete listing</button>
+            </form>
         </div>
     </div>
-</body>
+</section>
