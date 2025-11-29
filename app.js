@@ -27,7 +27,7 @@ app.use('/logo', expres.static(path.join(__dirname, 'logo')));
 app.use(methodOverride('_method'));
 
 
-const port = 8080;
+const PORT = process.env.PORT || 8080;
 // const MONGO_URL = 'mongodb://127.0.0.1:27017/aircnc';
 
 main().then(() => {
