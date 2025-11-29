@@ -1,4 +1,5 @@
 //Require necessary modules
+require('dotenv').config();
 const expres = require('express');
 const app = expres();
 const mongoose = require('mongoose');
@@ -26,9 +27,8 @@ app.use('/logo', expres.static(path.join(__dirname, 'logo')));
 app.use(methodOverride('_method'));
 
 
-//Database connection setup
 const port = 8080;
-const MONGO_URL = 'mongodb://127.0.0.1:27017/aircnc';
+// const MONGO_URL = 'mongodb://127.0.0.1:27017/aircnc';
 
 main().then(() => {
     console.log('Connected to MongoDB');
@@ -37,7 +37,7 @@ main().then(() => {
 })
 
 async function main() {
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(process.env.MONGODB_URI);
 }
 
 app.set('view engine', 'ejs');

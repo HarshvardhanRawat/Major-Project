@@ -1,20 +1,12 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const initData = require('./data.js');
 const Listing = require('../models/listing.js');
 
-const MONGO_URL = 'mongodb://127.0.0.1:27017/aircnc';
-
 const main = async () => {
-        await mongoose.connect(MONGO_URL);
-    };
-
-    main()
-        .then(() => {
-            console.log('Connected to MongoDB');
-        })
-        .catch(err => {
-            console.error('Error connecting to MongoDB', err);
-        })
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('Connected to MongoDB');
+};
 
 const initDB = async () => {
     await Listing.deleteMany({});
@@ -22,4 +14,13 @@ const initDB = async () => {
     console.log("DB Initialized with sample data");
 }
 
-initDB();
+main()
+    .then(async () => {
+        await initDB();
+        console.log("Data initialization complete");
+        mongoose.connection.close();
+    })
+    .catch(err => {
+        console.error('Error connecting to MongoDB', err);
+        mongoose.connection.close();
+    });
