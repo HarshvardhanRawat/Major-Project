@@ -22,7 +22,7 @@
                         <p class="listing-location"><%= listing.location %>, <%= listing.country %></p>
                         <h3><%= listing.title %></h3>
                     </div>
-                    <p class="listing-price">₹<%= listing.price.toLocaleString("en-IN") %> <span>/ night</span></p>
+                    <p class="listing-price">₹<%= listing.price ? listing.price.toLocaleString("en-IN") : "0" %> <span>/ night</span></p>
                 </div>
             </article>
         </a>

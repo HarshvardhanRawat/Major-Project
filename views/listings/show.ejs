@@ -14,7 +14,7 @@
         <div class="show-meta">
             <div>
                 <p class="label">Rate</p>
-                <p class="value">₹<%= listing.price.toLocaleString("en-IN") %> / night</p>
+                <p class="value">₹<%= listing.price ? listing.price.toLocaleString("en-IN") : "0" %> <span>/ night</span></p>
             </div>
             <div>
                 <p class="label">Hosted in</p>

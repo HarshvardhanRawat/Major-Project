@@ -6,15 +6,19 @@
 </section>
 
 <section class="form-panel">
-    <form method="POST" action="/listings/<%=listing._id%>?_method=PUT" class="stacked-form">
+    <form method="POST" action="/listings/<%=listing._id%>?_method=PUT" class="stacked-form needs-validation" novalidate >
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
-            <input type="text" id="title" name="listing[title]" value="<%=listing.title%>" required class="form-control">
+            <input type="text" id="title" name="listing[title]" value="<%=listing.title%>" required class="form-control" required>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please choose a Title.</div>
         </div>
 
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
             <textarea id="description" name="listing[description]" rows="4" required class="form-control"><%=listing.description%></textarea>
+            <div class="valid-feedback">Looks good!</div>
+            <div class="invalid-feedback">Please write a valid description.</div>
         </div>
 
         <div class="row g-3 align-items-end">
