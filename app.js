@@ -27,14 +27,8 @@ app.use('/logo', expres.static(path.join(__dirname, 'logo')));
 app.use(methodOverride('_method'));
 
 
-const PORT = process.env.PORT || 8080;
+const port = process.env.PORT || 8080;
 // const MONGO_URL = 'mongodb://127.0.0.1:27017/aircnc';
-
-main().then(() => {
-    console.log('Connected to MongoDB');
-}).catch(err => {
-    console.error('Error connecting to MongoDB', err);
-})
 
 async function main() {
     await mongoose.connect(process.env.MONGODB_URI);
@@ -47,7 +41,7 @@ const validateListing = (req, res, next) => {
     let {error} = listingSchema.validate(req.body);
     if(error) {
         let errMsg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(400, result.error)
+        throw new ExpressError(400, errMsg);
     } else {
         next();
     }
@@ -84,11 +78,9 @@ app.get('/listings/:id', wrapAsync(async (req, res) => {
 
 //Create route
 app.post('/listings', validateListing, wrapAsync(async (req, res) => {
-    wrapAsync(async (req, res, next) => {
-        const newListing = new Listing(req.body.listing);
-        await newListing.save();
-        res.redirect("/listings");
-    })
+    const newListing = new Listing(req.body.listing);
+    await newListing.save();
+    res.redirect("/listings");
 }));
 
 
@@ -132,13 +124,21 @@ app.delete('/listings/:id', wrapAsync(async (req, res) => {
 
 //Error handling middleware
 app.use((err, req, res, next) => {
-    let {satusCode=500, message="Something Went Wrong!"} = err;
+    let {statusCode=500, message="Something Went Wrong!"} = err;
     res.status(statusCode).render('error.ejs', {err});
     //res.status(statusCode).send(message);
 });
 
 
-//Server setup
-app.listen (port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
+//Server setup - Start server after MongoDB connection
+main()
+    .then(() => {
+        console.log('Connected to MongoDB');
+        app.listen(port, () => {
+            console.log(`Server is running on port ${port}`);
+        });
+    })
+    .catch(err => {
+        console.error('Error connecting to MongoDB', err);
+        process.exit(1);
+    });
