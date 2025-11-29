@@ -1,3 +1,4 @@
+//Require necessary modules
 const expres = require('express');
 const app = expres();
 const mongoose = require('mongoose');
@@ -7,20 +8,26 @@ const ejs = require('ejs');
 const wrapAsync = require('./utils/wrapAsync.js');
 const ExpressError = require('./utils/ExpressError.js');
 const {listingSchema} = require('./schema.js');
+const ejsMate = require('ejs-mate');
+const methodOverride = require('method-override');
+
 
 //Needed to read form data
 app.use(expres.urlencoded({ extended: true }));
 
-const ejsMate = require('ejs-mate');
+
+//Ejs-Mate setup
 app.engine('ejs', ejsMate);
 app.use(expres.static(path.join(__dirname, 'public')));
 app.use('/logo', expres.static(path.join(__dirname, 'logo')));
 
-const methodOverride = require('method-override');
+
+//Method Override setup
 app.use(methodOverride('_method'));
 
-const port = 8080;
 
+//Database connection setup
+const port = 8080;
 const MONGO_URL = 'mongodb://127.0.0.1:27017/aircnc';
 
 main().then(() => {
@@ -39,36 +46,43 @@ app.set('views', path.join(__dirname, 'views'));
 const validateListing = (req, res, next) => {
     let {error} = listingSchema.validate(req.body);
     if(error) {
+        let errMsg = error.details.map(el => el.message).join(',');
         throw new ExpressError(400, result.error)
     } else {
         next();
     }
 };
 
+
+// Home route
 app.get('/', wrapAsync(async (req, res) => {
     const heroListings = await Listing.find({}).limit(5);
     res.render("listings/main.ejs", {heroListings});
 }));
 
-// Index route to show all listings
+
+//Index route
 app.get ('/listings', wrapAsync(async (req, res) => {
     const allListings = await Listing.find({});
     res.render('./listings/index.ejs' , {allListings});
 }));
 
-//New route to show form to create new listing
+
+//New route
 app.get('/listings/new', (req, res) => {
     res.render('./listings/new.ejs');
 });
 
-// Show route to show details of a specific listing
+
+//Show route
 app.get('/listings/:id', wrapAsync(async (req, res) => {
     let {id} = req.params;
     const listing = await Listing.findById(id);
     res.render('./listings/show.ejs', {listing});
 }));
 
-//Create route to add new listing to the database
+
+//Create route
 app.post('/listings', validateListing, wrapAsync(async (req, res) => {
     wrapAsync(async (req, res, next) => {
         const newListing = new Listing(req.body.listing);
@@ -77,26 +91,30 @@ app.post('/listings', validateListing, wrapAsync(async (req, res) => {
     })
 }));
 
-//Edit route to update a specific listing
+
+//Edit route 
 app.get('/listings/:id/edit', validateListing, wrapAsync(async (req, res) => {
     let {id} = req.params;
     const listing = await Listing.findById(id);
     res.render('./listings/edit.ejs', {listing});
 }));
 
-//Update route to update a specific listing in the database
+
+//Update route
 app.put('/listings/:id', wrapAsync(async (req, res) => {
     let {id} = req.params;
     const listing = await Listing.findByIdAndUpdate(id, {...req.body.listing});
     res.redirect(`/listings/${listing._id}`);
 }));
 
-//Delete route to delete a specific listing from the database
+
+//Delete route 
 app.delete('/listings/:id', wrapAsync(async (req, res) => {
     let {id} = req.params;
     await Listing.findByIdAndDelete(id);
     res.redirect('/listings');
 }));
+
 
 // app.get("/testListing" , async (req, res) => {
 //     let sampleListing = new Listing({
@@ -112,12 +130,15 @@ app.delete('/listings/:id', wrapAsync(async (req, res) => {
 //     res.send('successful testing');
 // });
 
+//Error handling middleware
 app.use((err, req, res, next) => {
     let {satusCode=500, message="Something Went Wrong!"} = err;
     res.status(statusCode).render('error.ejs', {err});
     //res.status(statusCode).send(message);
 });
 
+
+//Server setup
 app.listen (port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
